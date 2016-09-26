@@ -23,7 +23,7 @@ module.exports = {
         loaders: [
             {
                 test  : /\.html$/,
-                loader: "raw!html"
+                loader: "raw-loader"
             },
             {
                 test  : /\.css$/,
