@@ -5,11 +5,12 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var precss            = require('precss');
 var autoprefixer      = require('autoprefixer');
 
+const PRODUCTION = process.env.NODE_ENV === 'production'
+
 module.exports = {
     devtool  : 'eval-source-map',
     devServer: {
         hot   : true,
-        noInfo: true,
         inline: true,
         port  : 3000
     },
@@ -26,11 +27,11 @@ module.exports = {
             },
             {
                 test  : /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss")
+                loader: PRODUCTION ? ExtractTextPlugin.extract("style", "css!postcss") : "style!css!postcss"
             },
             {
                 test  : /\.scss$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss?parser=postcss-scss")
+                loader: PRODUCTION ? ExtractTextPlugin.extract("style", "css!postcss!sass") : "style!css!postcss!sass"
             },
             {
                 test   : /\.js$/,
@@ -63,7 +64,6 @@ module.exports = {
     plugins  : [
         new webpack.NoErrorsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new ExtractTextPlugin("[name].[hash:7].css"),
         new HtmlWebpackPlugin(
             {
                 minify  : false,
@@ -73,8 +73,7 @@ module.exports = {
     ]
 }
 
-if (process.env.NODE_ENV === 'production'
-) {
+if (PRODUCTION) {
     module.exports.devtool         = ''
     module.exports.devServer       = {}
     module.exports.output.filename = 'bundle.[hash:7].js'
@@ -90,6 +89,7 @@ if (process.env.NODE_ENV === 'production'
                 warnings: false
             }
         }),
+        new ExtractTextPlugin("[name].[hash:7].css"),
         new webpack.optimize.CommonsChunkPlugin('common.[hash:7].js'),
         new webpack.optimize.OccurenceOrderPlugin()
     ])
