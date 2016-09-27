@@ -10,9 +10,11 @@ const PRODUCTION = process.env.NODE_ENV === 'production'
 module.exports = {
     devtool  : 'eval-source-map',
     devServer: {
-        hot   : true,
-        inline: true,
-        port  : 3000
+        hot        : true,
+        inline     : true,
+        host       : '0.0.0.0',
+        port       : 3000,
+        contentBase: './src/',
     },
     entry    : './src/main.js',
     output   : {
@@ -91,6 +93,6 @@ if (PRODUCTION) {
         }),
         new ExtractTextPlugin("[name].[hash:7].css"),
         new webpack.optimize.CommonsChunkPlugin('common.[hash:7].js'),
-        new webpack.optimize.OccurenceOrderPlugin()
+        new webpack.optimize.OccurenceOrderPlugin(),
     ])
 }
