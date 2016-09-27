@@ -14,7 +14,7 @@ module.exports = {
         inline: true,
         port  : 3000
     },
-    entry    : './app.js',
+    entry    : './src/main.js',
     output   : {
         path    : './dist',
         filename: 'bundle.js'
@@ -67,7 +67,7 @@ module.exports = {
         new HtmlWebpackPlugin(
             {
                 minify  : false,
-                template: './index.html'
+                template: './src/index.html'
             }
         ),
     ]
